@@ -1,7 +1,7 @@
-/* Estilos para el Gestor de Recetas - Vue 3 */
-/* Diseño responsive y moderno */
 
-/* Reset y configuración base */
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -26,7 +26,7 @@ body {
     padding: 0;
 }
 
-/* Hero Section */
+
 .hero {
     position: relative;
     min-height: 100vh;
@@ -76,7 +76,7 @@ body {
     }
 }
 
-/* Header */
+
 .header {
     text-align: center;
     margin-top: 20px;
@@ -95,10 +95,10 @@ body {
     opacity: 0.9;
 }
 
-/* Secciones */
+
 .form-section {
-    position: relative;    /* para anclar pseudo-elementos */
-    overflow: visible;     /* que se vean fuera del cuadro */
+    position: relative;    
+    overflow: visible;     
     width: 100%;
     margin: 40px auto;
     max-width: 600px;
@@ -144,7 +144,7 @@ body {
     color: #666;
 }
 
-/* Formulario */
+
 .recipe-form {
     display: grid;
     gap: 25px;
@@ -193,7 +193,7 @@ body {
     font-weight: 500;
 }
 
-/* Radio buttons */
+
 .radio-group {
     display: flex;
     gap: 20px;
@@ -225,12 +225,12 @@ body {
     color: #667eea;
 }
 
-.radio-label:has(input[type="radio"]:checked) {
+.radio-label.checked {
     border-color: #667eea;
     background: #f0f2ff;
 }
 
-/* Checkbox */
+
 .checkbox-label {
     display: flex;
     align-items: center;
@@ -244,7 +244,7 @@ body {
     transform: scale(1.2);
 }
 
-/* Botones */
+
 .form-actions {
     display: flex;
     gap: 15px;
@@ -317,7 +317,7 @@ body {
     font-size: 14px;
 }
 
-/* Mensaje cuando no hay recetas */
+
 .no-recipes {
     text-align: center;
     padding: 60px 20px;
@@ -332,7 +332,7 @@ body {
     margin-bottom: 10px;
 }
 
-/* Grid de recetas */
+
 .recipes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -340,7 +340,7 @@ body {
     margin-bottom: 30px;
 }
 
-/* Tarjeta de receta */
+
 .recipe-card {
     background: white;
     border-radius: 15px;
@@ -481,7 +481,7 @@ body {
     flex-wrap: wrap;
 }
 
-/* Contador de likes */
+
 .like-counter {
     display: flex;
     align-items: center;
@@ -509,7 +509,7 @@ body {
     color: white;
 }
 
-/* Botón limpiar todas */
+
 .clear-all {
     text-align: center;
     margin-top: 30px;
@@ -517,7 +517,7 @@ body {
     border-top: 2px solid #f0f0f0;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     #app {
         padding: 10px;
@@ -585,7 +585,7 @@ body {
     }
 }
 
-/* Animaciones */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -601,7 +601,7 @@ body {
     animation: fadeIn 0.5s ease-out;
 }
 
-/* Estados de carga y transiciones */
+
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
@@ -612,7 +612,7 @@ body {
     transform: scale(0.98);
 }
 
-/* Mejoras de accesibilidad */
+
 .btn:focus,
 .like-btn:focus,
 input:focus,
@@ -622,7 +622,7 @@ select:focus {
     outline-offset: 2px;
 }
 
-/* Estilos para diferentes tipos de cocina japonesa */
+
 .badge.ramen {
     background: #fff3e0;
     color: #f57c00;
@@ -668,46 +668,47 @@ select:focus {
     color: #ad1457;
 }
 
-/* Decoración lateral del formulario (no interactiva) */
+
 .form-section::before,
 .form-section::after {
     content: "";
     position: absolute;
-    top: -40px;            /* ajustable */
-    bottom: -40px;        /* que abrace la altura del bloque */
+    top: -40px;            
+    bottom: -40px;        
     width: clamp(280px, 35vw, 500px);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: bottom;
-    pointer-events: none;  /* no bloquea clics */
-    opacity: 0.3;          /* sutil; ajustable */
-    z-index: 0;            /* detrás del contenido */
+    pointer-events: none;  
+    opacity: 0.3;          
+    z-index: 0;            
 }
 
-/* Izquierda: Minato */
+
 .form-section::before {
     left: 0;
-    background-image: url("Imagenes/Minato.png"); /* ajusta ruta si es necesario */
-    transform: translateX(-100%);  /* coloca fuera del contenedor, a la izquierda */
+    background-image: url("Imagenes/Minato.png"); 
+    transform: translateX(-100%);  
     background-position: bottom left;
     filter: drop-shadow(0 6px 12px rgba(0,0,0,.15));
 }
 
-/* Derecha: Naruto */
+
 .form-section::after {
     right: 0;
-    background-image: url("Imagenes/Naruto.png"); /* ajusta ruta si es necesario */
-    transform: translateX(100%);   /* coloca fuera del contenedor, a la derecha */
+    background-image: url("Imagenes/Naruto.png"); 
+    transform: translateX(100%);   
     background-position: bottom right;
     filter: drop-shadow(0 6px 12px rgba(0,0,0,.15));
 }
 
-/* Responsivo: suavizar o ocultar en pantallas chicas */
+
 @media (max-width: 1024px) {
     .form-section::before,
     .form-section::after { opacity: 0.25; width: clamp(220px, 30vw, 350px); }
 }
 @media (max-width: 768px) {
     .form-section::before,
-    .form-section::after { display: none; } /* evita saturar el mobile */
+    .form-section::after { display: none; } 
 }
+

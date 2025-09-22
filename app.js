@@ -1,9 +1,8 @@
-// Aplicación Vue 3 - Gestor de Recetas
-// Usando Options API como se requiere en el parcial
+
 
 const { createApp } = Vue;
 
-// Componente para mostrar cada receta individual
+
 const RecipeCard = {
     props: {
         receta: {
@@ -37,6 +36,10 @@ const RecipeCard = {
                     <div class="info-item">
                         <span class="icon">Tipo:</span>
                         <span>{{ receta.tipo }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="icon">Creada:</span>
+                        <span>{{ formatearFecha(receta.fechaCreacion) }}</span>
                     </div>
                 </div>
                 
@@ -77,7 +80,11 @@ const RecipeCard = {
         </div>
     `,
     methods: {
-        // Método para formatear el tipo de cocina (filtro personalizado)
+        
+        formatearFecha(iso){
+            const d = new Date(iso);
+            return d.toLocaleDateString();
+        },
         formatearTipo(tipo) {
             const tipos = {
                 'ramen': 'Ramen',
@@ -93,7 +100,7 @@ const RecipeCard = {
             return tipos[tipo] || tipo;
         },
         
-        // Método para formatear la dificultad (filtro personalizado)
+        
         formatearDificultad(dificultad) {
             const dificultades = {
                 'facil': 'Fácil',
@@ -103,30 +110,30 @@ const RecipeCard = {
             return dificultades[dificultad] || dificultad;
         },
         
-        // Método para obtener imagen según el tipo de cocina
+        
         obtenerImagen(tipo) {
             const imagenes = {
-                'ramen': 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=300&h=200&fit=crop',
-                'sushi': 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=300&h=200&fit=crop',
-                'donburi': 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=300&h=200&fit=crop',
-                'tempura': 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&h=200&fit=crop',
-                'curry-japones': 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=300&h=200&fit=crop',
-                'okonomiyaki': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=200&fit=crop',
-                'yakitori': 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&h=200&fit=crop',
-                'bento': 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=200&fit=crop',
-                'wagashi': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=200&fit=crop'
+                'ramen': 'Imagenes/ramen.jpeg',
+                'sushi': 'Imagenes/sushi.jpeg',
+                'donburi': 'Imagenes/donburi.jpeg',
+                'tempura': 'Imagenes/tempura.jpeg',
+                'curry-japones': 'Imagenes/curry-japones.jpeg',
+                'okonomiyaki': 'Imagenes/okonomiyaki.jpeg',
+                'yakitori': 'Imagenes/yakitori.jpeg',
+                'bento': 'Imagenes/bento.jpeg',
+                'wagashi': 'Imagenes/wagashi.jpeg'
             };
-            return imagenes[tipo] || 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=300&h=200&fit=crop';
+            return imagenes[tipo] || 'Imagenes/ramen.jpeg';
         },
         
-        // Método para actualizar likes
+        
         actualizarLikes(recetaId, nuevosLikes) {
             this.$emit('like-updated', recetaId, nuevosLikes);
         }
     }
 };
 
-// Componente contador de likes
+
 const LikeCounter = {
     props: {
         recetaId: {
@@ -168,11 +175,11 @@ const LikeCounter = {
     }
 };
 
-// Aplicación principal
+
 const app = createApp({
     data() {
         return {
-            // Datos del formulario
+            
             nuevaReceta: {
                 nombre: '',
                 descripcion: '',
@@ -183,66 +190,60 @@ const app = createApp({
                 esFavorita: false
             },
             
-            // Errores de validación
+            
             errores: {},
             
-            // Lista de recetas
+            
             recetas: [],
             
-            // Contador de ID para nuevas recetas
+            
             siguienteId: 1
         };
     },
     
-    computed: {
-        // Computed para contar recetas favoritas
-        recetasFavoritas() {
-            return this.recetas.filter(receta => receta.esFavorita).length;
-        }
-    },
-    
     mounted() {
-        // Cargar datos del localStorage al inicializar
+        
         this.cargarRecetas();
     },
     
     methods: {
-        // Método para validar el formulario
+        
+        contarFavoritas() { return this.recetas.filter(r => r.esFavorita).length; },
         validarFormulario() {
             this.errores = {};
             let esValido = true;
             
-            // Validar nombre
+            
             if (!this.nuevaReceta.nombre.trim()) {
                 this.errores.nombre = 'El nombre es obligatorio';
                 esValido = false;
             }
             
-            // Validar descripción
+            
             if (!this.nuevaReceta.descripcion.trim()) {
                 this.errores.descripcion = 'La descripción es obligatoria';
                 esValido = false;
             }
             
-            // Validar tipo
+            
             if (!this.nuevaReceta.tipo) {
                 this.errores.tipo = 'Debes seleccionar un tipo de cocina';
                 esValido = false;
             }
             
-            // Validar dificultad
+            
             if (!this.nuevaReceta.dificultad) {
                 this.errores.dificultad = 'Debes seleccionar una dificultad';
                 esValido = false;
             }
             
-            // Validar tiempo
+            
             if (!this.nuevaReceta.tiempo || this.nuevaReceta.tiempo <= 0) {
                 this.errores.tiempo = 'El tiempo debe ser mayor a 0';
                 esValido = false;
             }
             
-            // Validar ingredientes
+            
             if (!this.nuevaReceta.ingredientes.trim()) {
                 this.errores.ingredientes = 'Los ingredientes son obligatorios';
                 esValido = false;
@@ -251,7 +252,7 @@ const app = createApp({
             return esValido;
         },
         
-        // Método para agregar nueva receta
+        
         agregarReceta() {
             if (this.validarFormulario()) {
                 const receta = {
@@ -265,12 +266,12 @@ const app = createApp({
                 this.guardarRecetas();
                 this.limpiarFormulario();
                 
-                // Mostrar mensaje de éxito (opcional)
+                
                 alert('¡Receta agregada exitosamente!');
             }
         },
         
-        // Método para limpiar el formulario
+        
         limpiarFormulario() {
             this.nuevaReceta = {
                 nombre: '',
@@ -284,7 +285,7 @@ const app = createApp({
             this.errores = {};
         },
         
-        // Método para eliminar una receta
+        
         eliminarReceta(id) {
             if (confirm('¿Estás seguro de que quieres eliminar esta receta?')) {
                 this.recetas = this.recetas.filter(receta => receta.id !== id);
@@ -292,7 +293,7 @@ const app = createApp({
             }
         },
         
-        // Método para alternar favorita
+        
         toggleFavorita(id) {
             const receta = this.recetas.find(r => r.id === id);
             if (receta) {
@@ -301,7 +302,7 @@ const app = createApp({
             }
         },
         
-        // Método para limpiar todas las recetas
+        
         limpiarTodasLasRecetas() {
             if (confirm('¿Estás seguro de que quieres eliminar TODAS las recetas? Esta acción no se puede deshacer.')) {
                 this.recetas = [];
@@ -309,7 +310,7 @@ const app = createApp({
             }
         },
         
-        // Método para guardar recetas en localStorage
+        
         guardarRecetas() {
             try {
                 localStorage.setItem('recetas_japonesas', JSON.stringify(this.recetas));
@@ -319,7 +320,7 @@ const app = createApp({
             }
         },
         
-        // Método para cargar recetas del localStorage
+        
         cargarRecetas() {
             try {
                 const recetasGuardadas = localStorage.getItem('recetas_japonesas');
@@ -333,7 +334,7 @@ const app = createApp({
                     this.siguienteId = parseInt(siguienteIdGuardado);
                 }
                 
-                // Si no hay recetas, agregar algunas de ejemplo
+                
                 if (this.recetas.length === 0) {
                     this.agregarRecetasEjemplo();
                 }
@@ -343,7 +344,7 @@ const app = createApp({
             }
         },
         
-        // Método para agregar recetas de ejemplo
+        
         agregarRecetasEjemplo() {
             const recetasEjemplo = [
                 {
@@ -396,5 +397,8 @@ const app = createApp({
     }
 });
 
-// Montar la aplicación
+
+app.component('recipe-card', RecipeCard);
+app.component('like-counter', LikeCounter);
 app.mount('#app');
+

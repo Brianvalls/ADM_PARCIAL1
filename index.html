@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Recetas Japonesas - Vue 3</title>
+    <title>Recetas Japonesas</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Vue 3 CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
     <div id="app">
-        <!-- Hero Section -->
         <section class="hero" role="banner" aria-label="Introducción">
             <div class="hero-overlay"></div>
             <div class="hero-content">
@@ -24,36 +22,35 @@
         </section>
 
 
-        <!-- Formulario de nueva receta -->
+        
         <section class="form-section" id="formulario">
             <h2>Agregar Nueva Receta</h2>
             <form @submit.prevent="agregarReceta" class="recipe-form">
-                <!-- Campo nombre -->
                 <div class="form-group">
                     <label for="nombre">Nombre de la Receta *</label>
                     <input 
                         type="text" 
                         id="nombre" 
-                        v-model="nuevaReceta.nombre"
+                        v-model.trim="nuevaReceta.nombre"
                         :class="{ 'error': errores.nombre }"
                         placeholder="Ej: Tonkotsu Ramen, Chirashi Sushi, Gyudon"
                     >
                     <span v-if="errores.nombre" class="error-message">{{ errores.nombre }}</span>
                 </div>
 
-                <!-- Campo descripción -->
+                
                 <div class="form-group">
                     <label for="descripcion">Descripción *</label>
                     <textarea 
                         id="descripcion" 
-                        v-model="nuevaReceta.descripcion"
+                        v-model.trim="nuevaReceta.descripcion"
                         :class="{ 'error': errores.descripcion }"
                         placeholder="Describe brevemente la receta y su estilo (caldo, técnica, región)..."
                     ></textarea>
                     <span v-if="errores.descripcion" class="error-message">{{ errores.descripcion }}</span>
                 </div>
 
-                <!-- Campo tipo de cocina -->
+                
                 <div class="form-group">
                     <label for="tipo">Tipo de Cocina *</label>
                     <select 
@@ -75,19 +72,19 @@
                     <span v-if="errores.tipo" class="error-message">{{ errores.tipo }}</span>
                 </div>
 
-                <!-- Campo dificultad -->
+                
                 <div class="form-group">
                     <label>Dificultad *</label>
                     <div class="radio-group">
-                        <label class="radio-label">
+                        <label class="radio-label" :class="{ checked: nuevaReceta.dificultad==='facil' }">
                             <input type="radio" v-model="nuevaReceta.dificultad" value="facil">
                             <span>Fácil</span>
                         </label>
-                        <label class="radio-label">
+                        <label class="radio-label" :class="{ checked: nuevaReceta.dificultad==='media' }">
                             <input type="radio" v-model="nuevaReceta.dificultad" value="media">
                             <span>Media</span>
                         </label>
-                        <label class="radio-label">
+                        <label class="radio-label" :class="{ checked: nuevaReceta.dificultad==='dificil' }">
                             <input type="radio" v-model="nuevaReceta.dificultad" value="dificil">
                             <span>Difícil</span>
                         </label>
@@ -95,7 +92,7 @@
                     <span v-if="errores.dificultad" class="error-message">{{ errores.dificultad }}</span>
                 </div>
 
-                <!-- Campo tiempo de preparación -->
+                
                 <div class="form-group">
                     <label for="tiempo">Tiempo de Preparación (minutos) *</label>
                     <input 
@@ -109,19 +106,19 @@
                     <span v-if="errores.tiempo" class="error-message">{{ errores.tiempo }}</span>
                 </div>
 
-                <!-- Campo ingredientes -->
+                
                 <div class="form-group">
                     <label for="ingredientes">Ingredientes *</label>
                     <textarea 
                         id="ingredientes" 
-                        v-model="nuevaReceta.ingredientes"
+                        v-model.trim="nuevaReceta.ingredientes"
                         :class="{ 'error': errores.ingredientes }"
                         placeholder="Lista ingredientes separados por comas (dashi, miso, algas nori, shoyu, mirin, sake, etc.)"
                     ></textarea>
                     <span v-if="errores.ingredientes" class="error-message">{{ errores.ingredientes }}</span>
                 </div>
 
-                <!-- Campo favorita -->
+                
                 <div class="form-group">
                     <label class="checkbox-label">
                         <input type="checkbox" v-model="nuevaReceta.esFavorita">
@@ -129,7 +126,7 @@
                     </label>
                 </div>
 
-                <!-- Botones -->
+                
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Agregar Receta</button>
                     <button type="button" @click="limpiarFormulario" class="btn btn-secondary">Limpiar</button>
@@ -137,23 +134,28 @@
             </form>
         </section>
 
-        <!-- Sección de recetas guardadas -->
+        
         <section class="recipes-section" id="lista">
             <div class="section-header">
                 <h2>Mis Recetas Japonesas Guardadas</h2>
                 <div class="stats">
                     <span class="stat">Total: {{ recetas.length }}</span>
-                    <span class="stat">Favoritas: {{ recetasFavoritas }}</span>
+                    <span class="stat">Favoritas: {{ contarFavoritas() }}</span>
                 </div>
             </div>
 
-            <!-- Mensaje cuando no hay recetas -->
+            
             <div v-if="recetas.length === 0" class="no-recipes">
                 <p>Aún no hay recetas japonesas.</p>
                 <p>¡Agrega tu primera receta usando el formulario de arriba!</p>
             </div>
 
-            <!-- Lista de recetas -->
+            
+            <div v-else-if="recetas.length <= 3" class="no-recipes">
+                Agregá 4 o más recetas para ver el listado completo.
+            </div>
+
+            
             <div v-else class="recipes-grid">
                 <recipe-card 
                     v-for="receta in recetas" 
@@ -164,7 +166,7 @@
                 ></recipe-card>
             </div>
 
-            <!-- Botón para limpiar todas las recetas -->
+            
             <div v-if="recetas.length > 0" class="clear-all">
                 <button @click="limpiarTodasLasRecetas" class="btn btn-danger">
                     Eliminar Todas las Recetas
@@ -173,7 +175,8 @@
         </section>
     </div>
 
-    <!-- Scripts -->
+    
     <script src="app.js"></script>
 </body>
 </html>
+
