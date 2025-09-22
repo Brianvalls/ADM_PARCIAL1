@@ -1,7 +1,5 @@
 
-
 const { createApp } = Vue;
-
 
 const RecipeCard = {
     props: {
@@ -79,6 +77,7 @@ const RecipeCard = {
             </div>
         </div>
     `,
+
     methods: {
         
         formatearFecha(iso){
@@ -100,6 +99,7 @@ const RecipeCard = {
             return tipos[tipo] || tipo;
         },
         
+
         
         formatearDificultad(dificultad) {
             const dificultades = {
@@ -108,9 +108,12 @@ const RecipeCard = {
                 'dificil': 'Difícil'
             };
             return dificultades[dificultad] || dificultad;
+
         },
         
         
+
+
         obtenerImagen(tipo) {
             const imagenes = {
                 'ramen': 'Imagenes/ramen.jpeg',
@@ -127,11 +130,13 @@ const RecipeCard = {
         },
         
         
+
         actualizarLikes(recetaId, nuevosLikes) {
             this.$emit('like-updated', recetaId, nuevosLikes);
         }
     }
 };
+
 
 
 const LikeCounter = {
@@ -163,6 +168,7 @@ const LikeCounter = {
         </div>
     `,
     methods: {
+
         toggleLike() {
             if (this.isLiked) {
                 this.likes--;
@@ -192,7 +198,6 @@ const app = createApp({
             
             
             errores: {},
-            
             
             recetas: [],
             
@@ -231,6 +236,7 @@ const app = createApp({
                 esValido = false;
             }
             
+
             
             if (!this.nuevaReceta.dificultad) {
                 this.errores.dificultad = 'Debes seleccionar una dificultad';
@@ -311,6 +317,8 @@ const app = createApp({
         },
         
         
+
+
         guardarRecetas() {
             try {
                 localStorage.setItem('recetas_japonesas', JSON.stringify(this.recetas));
@@ -320,6 +328,7 @@ const app = createApp({
             }
         },
         
+
         
         cargarRecetas() {
             try {
@@ -391,6 +400,7 @@ const app = createApp({
         }
     },
     
+
     components: {
         'recipe-card': RecipeCard,
         'like-counter': LikeCounter
@@ -398,7 +408,9 @@ const app = createApp({
 });
 
 
+
 app.component('recipe-card', RecipeCard);
 app.component('like-counter', LikeCounter);
+
 app.mount('#app');
 

@@ -1,7 +1,4 @@
 
-
-
-
 * {
     margin: 0;
     padding: 0;
@@ -302,7 +299,7 @@ body {
 }
 
 .btn-outline {
-    background: transparent;
+    background: white;
     border: 2px solid #667eea;
     color: #667eea;
 }
